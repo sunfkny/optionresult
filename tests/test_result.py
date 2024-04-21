@@ -71,14 +71,12 @@ class TestResult(unittest.TestCase):
         with contextlib.redirect_stdout(f):
             for num in line.splitlines():
                 r = Result[int, Exception].of(lambda: int(num)).map(lambda i: i * 2)
-                match r:
-                    case Ok(n):
-                        print(n)
-                    case Err():
-                        pass
-                    case _:  # pragma: no cover
-                        assert False, "unreachable"
-
+                if isinstance(r, Ok):
+                    print(r.unwrap())
+                elif isinstance(r, Err):
+                    pass
+                else:
+                    assert False, "unreachable"  # pragma: no cover
         self.assertEqual(f.getvalue(), "2\n4\n6\n8\n")
 
     def test_map_or(self):
