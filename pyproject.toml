@@ -2,12 +2,25 @@
 name = "optionresult"
 version = "0.1.1"
 description = "Rust style option and result types for Python"
-authors = [
-    { name = "sunfkny", email = "sunfkny@google.com" },
-]
+authors = [{ name = "sunfkny", email = "sunfkny@google.com" }]
 dependencies = []
 readme = "README.md"
 requires-python = ">= 3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+]
+
+[project.urls]
+Homepage = "https://github.com/sunfkny/optionresult"
 
 [build-system]
 requires = ["hatchling"]
@@ -15,20 +28,15 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = [
-    "pytest>=8.1.1",
-    "coverage>=7.4.4",
-]
+dev-dependencies = ["pytest>=8.1.1", "coverage>=7.4.4"]
+
 [tool.rye.scripts]
 "coverage:test" = "coverage run -m pytest"
 "coverage:report" = "coverage report -m"
-test = { chain = ["coverage:test", "coverage:report" ] }
+test = { chain = ["coverage:test", "coverage:report"] }
 
 [tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "raise NotImplementedError"
-]
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
