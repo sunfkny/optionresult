@@ -60,8 +60,8 @@ line = "1\n2\n3\n4\na\nb\nc\nd\n"
 for num in line.splitlines():
     r = Result[int, Exception].of(lambda: int(num)).map(lambda i: i * 2)
     if isinstance(r, Ok):
-        print(r.unwrap())
+        pass
     elif isinstance(r, Err):
         pass
     else:
-        t.assert_never(r)  # type: ignore
+        t.assert_type(r, t.Never)  # pragma: no cover

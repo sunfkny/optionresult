@@ -1,6 +1,6 @@
 [project]
 name = "optionresult"
-version = "0.1.3"
+version = "0.1.4"
 description = "Rust style option and result types for Python"
 authors = [{ name = "sunfkny", email = "sunfkny@google.com" }]
 dependencies = []
@@ -32,12 +32,14 @@ dev-dependencies = [
     "pytest>=8.1.1",
     "coverage>=7.4.4",
     "typing-extensions>=4.11.0",
+    "pyright>=1.1.359",
 ]
 
 [tool.rye.scripts]
 "coverage:test" = "coverage run -m pytest"
 "coverage:report" = "coverage report -m"
-test = { chain = ["coverage:test", "coverage:report"] }
+"lint:pyright" = "pyright src tests"
+test = { chain = ["lint:pyright", "coverage:test", "coverage:report"] }
 
 [tool.coverage.report]
 exclude_lines = ["pragma: no cover", "raise NotImplementedError"]

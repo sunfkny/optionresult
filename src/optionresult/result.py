@@ -82,21 +82,8 @@ class Result(t.Generic[T, E]):
     def unwrap_err(self) -> t.NoReturn | E:
         raise NotImplementedError
 
-    def and_(self, resb: Ok | Err | Result) -> Ok | Err | Result:
+    def and_(self, resb: Ok[U, F] | Err[U, F] | Result[U, F]) -> Ok[U, F] | Err[U, F] | Result[U, F]:
         raise NotImplementedError
-
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Result[U, F]]) -> Result[U, F]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Ok[U, F]]) -> Ok[U, F]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Err[U, F]]) -> Err[U, F]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Result[U, F]]) -> Result[T, E]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Ok[U, F]]) -> Err[T, E]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Err[U, F]]) -> Err[T, E]: ...
 
     def and_then(self, f: t.Callable[[T], Ok | Err | Result]) -> Ok | Err | Result:
         raise NotImplementedError
@@ -180,26 +167,28 @@ class Ok(Result[T, E]):
     def unwrap_err(self) -> t.NoReturn:
         raise PanicError(self.unwrap())
 
-    def and_(self, resb: Ok[T, F] | Err[T, F] | Ok[U, F] | Err[U, F]) -> Ok[T, F] | Err[T, F] | Ok[U, F] | Err[U, F]:
+    def and_(
+        self, resb: Ok[T, F] | Err[T, F] | Result[T, F] | Ok[U, F] | Err[U, F] | Result[U, F]
+    ) -> Ok[T, F] | Err[T, F] | Result[T, F] | Ok[U, F] | Err[U, F] | Result[U, F]:
         return resb
 
-    def __and__(self, resb: Ok[T, F] | Err[T, F] | Ok[U, F] | Err[U, F]) -> Ok[T, F] | Err[T, F] | Ok[U, F] | Err[U, F]:
+    def __and__(
+        self, resb: Ok[T, F] | Err[T, F] | Result[T, F] | Ok[U, F] | Err[U, F] | Result[U, F]
+    ) -> Ok[T, F] | Err[T, F] | Result[T, F] | Ok[U, F] | Err[U, F] | Result[U, F]:
         return self.and_(resb)
 
     @t.overload
     def and_then(self, f: t.Callable[[T], Result[U, F]]) -> Result[U, F]: ...
     @t.overload
-    def and_then(self, f: t.Callable[[T], Ok[U, F]]) -> Ok[U, F]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Err[U, F]]) -> Err[U, F]: ...
+    def and_then(self, f: t.Callable[[T], Ok | Err | Result]): ...
 
     def and_then(self, f: t.Callable[[T], Ok | Err | Result]):
         return f(self.unwrap())
 
-    def or_(self, res: Ok[T, F] | Err[T, F]) -> Ok[T, E]:
+    def or_(self, res: Ok[T, F] | Err[T, F] | Result[T, F]) -> Ok[T, E]:
         return self
 
-    def __or__(self, res: Ok[T, F] | Err[T, F]) -> Ok[T, E]:
+    def __or__(self, res: Ok[T, F] | Err[T, F] | Result[T, F]) -> Ok[T, E]:
         return self.or_(res)
 
     def or_else(self, op: t.Callable[[E], Ok[U, F] | Err[U, F] | Result[U, F]]) -> Ok[T, E]:
@@ -277,26 +266,19 @@ class Err(Result[T, E]):
     def unwrap_err(self) -> E:
         return self.value
 
-    def and_(self, resb: Ok[T, F] | Err[T, F]) -> Err[T, E]:
+    def and_(self, resb: Ok[U, F] | Err[U, F] | Result[U, F]) -> Err[T, E]:
         return self
 
-    def __and__(self, resb: Ok[T, F] | Err[T, F]) -> Err[T, E]:
+    def __and__(self, resb: Ok[U, F] | Err[U, F] | Result[U, F]) -> Err[T, E]:
         return self.and_(resb)
-
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Result[U, F]]) -> Err[T, E]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Ok[U, F]]) -> Err[T, E]: ...
-    @t.overload
-    def and_then(self, f: t.Callable[[T], Err[U, F]]) -> Err[T, E]: ...
 
     def and_then(self, f: t.Callable[[T], Ok | Err | Result]) -> Err[T, E]:
         return self
 
-    def or_(self, res: "Ok[T, F] | Err[T, F]") -> Ok[T, F] | Err[T, F]:
+    def or_(self, res: Ok[T, F] | Err[T, F] | Result[T, F]) -> Ok[T, F] | Err[T, F] | Result[T, F]:
         return res
 
-    def __or__(self, res: "Ok[T, F] | Err[T, F]") -> Ok[T, F] | Err[T, F]:
+    def __or__(self, res: Ok[T, F] | Err[T, F] | Result[T, F]) -> Ok[T, F] | Err[T, F] | Result[T, F]:
         return self.or_(res)
 
     @t.overload

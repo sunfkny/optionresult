@@ -15,11 +15,16 @@ exceptiongroup==1.2.1
     # via pytest
 iniconfig==2.0.0
     # via pytest
+nodeenv==1.8.0
+    # via pyright
 packaging==24.0
     # via pytest
 pluggy==1.5.0
     # via pytest
+pyright==1.1.359
 pytest==8.1.1
+setuptools==69.5.1
+    # via nodeenv
 tomli==2.0.1
     # via pytest
 typing-extensions==4.11.0
