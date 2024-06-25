@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import typing_extensions as t
 from optionresult import Err, Ok, Option, Result
 
@@ -65,3 +67,12 @@ for num in line.splitlines():
         pass
     else:
         t.assert_type(r, t.Never)  # pragma: no cover
+
+
+class A:
+    def __init__(self, x: int | None):
+        self.x = x
+
+
+t.assert_type(Option(A(None)).map(lambda x: x.x), Option[int])
+t.assert_type(Option(A(2)).map(lambda x: x.x), Option[int])

@@ -3,7 +3,7 @@ import io
 import typing as t
 import unittest
 
-from optionresult import Err, Ok, Option, Result, PanicError
+from optionresult import Err, Ok, Option, PanicError, Result
 
 UInt32 = t.NewType("UInt32", int)
 
@@ -98,12 +98,7 @@ class TestResult(unittest.TestCase):
     def test_inspect(self):
         f = io.StringIO()
         with contextlib.redirect_stdout(f):
-            x = (
-                Result.of(lambda: int("4"))
-                .inspect(lambda x: print(f"original: {x}"))
-                .map(lambda x: x**3)
-                .expect("failed to parse number")
-            )
+            x = Result.of(lambda: int("4")).inspect(lambda x: print(f"original: {x}")).map(lambda x: x**3).expect("failed to parse number")
         self.assertEqual(x, 64)
         self.assertEqual(f.getvalue(), "original: 4\n")
 

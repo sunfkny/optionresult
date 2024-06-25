@@ -26,6 +26,25 @@ Homepage = "https://github.com/sunfkny/optionresult"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.ruff]
+line-length = 160
+target-version = "py310"
+
+[tool.ruff.lint]
+extend-select = [
+    "A",    # https://docs.astral.sh/ruff/rules/#flake8-builtins-a
+    "B006", #https://docs.astral.sh/ruff/rules/mutable-argument-default/
+    "I",    #https://docs.astral.sh/ruff/rules/#isort-i
+    "INP",  #https://docs.astral.sh/ruff/rules/#flake8-no-pep420-inp
+]
+ignore = [
+    "F401", # https://docs.astral.sh/ruff/rules/unused-import/
+    "E402", # https://docs.astral.sh/ruff/rules/module-import-not-at-top-of-file/
+]
+
+[tool.uv.pip]
+index-url = "https://mirrors.aliyun.com/pypi/simple/"
+
 [tool.rye]
 managed = true
 dev-dependencies = [

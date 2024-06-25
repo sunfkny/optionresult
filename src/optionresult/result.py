@@ -1,5 +1,7 @@
 from __future__ import annotations
+
 import typing as t
+
 from .exceptions import PanicError
 
 if t.TYPE_CHECKING:

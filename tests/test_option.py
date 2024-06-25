@@ -3,7 +3,7 @@ import io
 import typing as t
 import unittest
 
-from optionresult import Option, Ok, Err
+from optionresult import Err, Ok, Option
 
 UInt32 = t.NewType("UInt32", int)
 
