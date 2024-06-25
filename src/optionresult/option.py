@@ -5,7 +5,7 @@ import typing as t
 from .exceptions import PanicError
 
 if t.TYPE_CHECKING:
-    from .result import Err, Ok # pragma: no cover
+    from .result import Err, Ok  # pragma: no cover
 
 T = t.TypeVar("T")
 U = t.TypeVar("U")
@@ -63,7 +63,7 @@ class Option(t.Generic[T]):
         else:
             return self.value
 
-    def map(self, f: t.Callable[[T], U]) -> Option[U]:
+    def map(self, f: t.Callable[[T], U | None]) -> Option[U]:
         if self.value is None:
             return Option(None)
         else:
